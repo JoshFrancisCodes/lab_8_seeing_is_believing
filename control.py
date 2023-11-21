@@ -21,7 +21,6 @@ def run_example():
                                 "yaw_velocity": yaw_vel,
                                 "height": -0.14,
                                 "com_x_shift": 0.005})
-            # time.sleep(0.001)
     finally:
         pass
 
