@@ -10,7 +10,7 @@ def run_example():
     pup.slow_stand(do_sleep=True)
 
     pup.start_trot()
-    yaw_vel = 0.0
+    yaw_rate = 0.0
     try:
         while True:
             ### TODO: Add your code here to receive the velocity command from the vision script and control the robot
@@ -18,7 +18,7 @@ def run_example():
 
             pup.step(action={"x_velocity": 0.0,
                                 "y_velocity": 0.0,
-                                "yaw_velocity": yaw_vel,
+                                "yaw_rate": yaw_rate,
                                 "height": -0.14,
                                 "com_x_shift": 0.005})
     finally:
