@@ -9,7 +9,6 @@ def run_example():
     print("starting...")
     pup.slow_stand(do_sleep=True)
 
-    pup.start_trot()
     yaw_rate = 0.0
     try:
         while True:
