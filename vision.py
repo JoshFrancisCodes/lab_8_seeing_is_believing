@@ -94,8 +94,8 @@ with dai.Device(pipeline) as device:
 
         ### TODO: Add your code here to detect a person and run a visual servoing controller
         ### Steps:
-        ### 1. Detect a person
-        ### 2. Compute the centroid of the bounding box
-        ### 3. Compute the error between the centroid and the center of the image
-        ### 4. Compute the velocity command using a proportional controller
-        ### 5. Send the velocity command to the pupper
+        ### 1. Detect a person by pulling out the labelMap bounding box with the correct label text
+        ### 2. Compute the x midpoint of the bounding box
+        ### 3. Compute the error between the x midpoint and the center of the image (the bounds of the image are normalized to be 0 to 1).
+        ### 4. Compute the yaw rate command using a proportional controller
+        ### 5. Send the yaw rate command to the pupper
