@@ -10,7 +10,13 @@ import argparse
 def send_velocity_command(yaw_velocity):
     ### TODO: Add your code here to send the velocity command to the pupper
     ### Write the velocity command to the file "velocity_command"
-    pass
+    f = open("velocity_command.txt", "w")
+    f.write(str(yaw_velocity))
+    f.close()
+
+def proportional_control(theta_cur, theta_target, Kp):
+    ### Implement proportional controller to determine yaw_rate
+    return Kp * (theta_target - theta_cur)
 
 nnPathDefault = str((Path(__file__).parent / Path('mobilenet-ssd_openvino_2021.4_6shave.blob')).resolve().absolute())
 parser = argparse.ArgumentParser()
@@ -60,6 +66,9 @@ camRgb.preview.link(nn.input)
 nn.out.link(nnOut.input)
 nn.outNetwork.link(nnNetworkOut.input);
 
+# Define Kp
+kp = 1.0
+
 # Connect to device and start pipeline
 with dai.Device(pipeline) as device:
 
@@ -92,10 +101,28 @@ with dai.Device(pipeline) as device:
             detections = inDet.detections
             counter += 1
 
-        ### TODO: Add your code here to detect a person and run a visual servoing controller
+        print("detections: ", detections)       # See output of the detections array
+
+        ### Detect a person and run a visual servoing controller
         ### Steps:
         ### 1. Detect a person by pulling out the labelMap bounding box with the correct label text
-        ### 2. Compute the x midpoint of the bounding box
-        ### 3. Compute the error between the x midpoint and the center of the image (the bounds of the image are normalized to be 0 to 1).
-        ### 4. Compute the yaw rate command using a proportional controller
-        ### 5. Send the yaw rate command to the pupper
+        print("this is a check")
+        for detection in detections:
+            print("here")
+            if labelMap[detection.label] == "person":
+                person = detection 
+                print(person)
+
+                ### 2. Compute the x midpoint of the bounding box
+                x_center = (person.xmin + person.xmax) / 2
+                print(x_center)
+
+                ### 3. Compute the error between the x midpoint and the center of the image (the bounds of the image are normalized to be 0 to 1).
+                x_error = x_center - 0.5
+        
+                ### 4. Compute the yaw rate command using a proportional controller
+                yaw_velocity = kp * x_error
+
+                ### 5. Send the yaw rate command to the pupper
+                print(yaw_velocity)
+                send_velocity_command(yaw_velocity)
